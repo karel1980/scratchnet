@@ -16,8 +16,7 @@ fs.readFile('extension.json', 'utf-8', function(err,data) {
 
 var app = express();
 var count = 0;
-var queue = [];
-var nextLine;
+var nextLine = '-stil-';
 
 //
 // called by scratch 
@@ -49,20 +48,11 @@ app.get('/send/:msg', function(req, res){
 });
 
 app.get('/nextLine', function(req, res){
-  if (count < queue.length) {
-    count++;
-  }
-  if (count >= queue.length) {
-    nextLine = undefined;
-  }
-  
   res.send('ok');
 });
 
 app.get('/poll', function(req, res){
-  if (nextLine != undefined) {
-    res.send('line ' + nextLine);
-  }
+  res.send('line ' + nextLine);
 });
 
 //
@@ -70,7 +60,7 @@ app.get('/poll', function(req, res){
 //
 app.get('/receive/:msg', function(req, res){
   console.log("received " + req.param('msg'));
-  queue.push(req.param('msg'));
+  nextLine = req.param('msg');
   res.send('ok');
 });
 
