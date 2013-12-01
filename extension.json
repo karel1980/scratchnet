@@ -1,0 +1,9 @@
+{ 
+  "extensionName": "CommunicationExtension",
+  "extensionPort": 12300,
+  "blockSpecs": [
+    [" ", "Verstuur %s", "send", 1],
+    [" ", "Haal de volgende lijn op", "nextLine"],
+    ["r", "lijn", "line"]
+  ]
+}
