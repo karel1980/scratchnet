@@ -1,0 +1,31 @@
+separate link.js and link-manager.js 
+>> allowing for more admin pages later that allow web-UI to connect (in stead of current request params)  
+>> then some autodetect broadcast-protocol should be found
+>> then own IP should/hostname should be retrieved
+>> maybe allow for multiple simultaneous links (rooms) also in the request-uri
+
+
+ can we have an event too? >> or should we write own poll loops that send signal?
+
+
+See: 
+http://scratch.mit.edu/discuss/topic/18117/
+
+extension files should have extension .s2e >> we should include the file in the nodejs-ecpress distro and survice it over the web?
+
+the localhost should send a crossdomain policy file
+
+we should listen to /reset_all
+
+
+
+See also:
+nodejs discovery en/of peer-2-peer systeempje
+mogelijke kandidaten:
+https://npmjs.org/package/polo
+https://npmjs.org/package/discovery-network
+https://npmjs.org/package/hook.io
+
+
+
+
