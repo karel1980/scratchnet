@@ -1,31 +1,59 @@
-separate link.js and link-manager.js 
->> allowing for more admin pages later that allow web-UI to connect (in stead of current request params)  
->> then some autodetect broadcast-protocol should be found
->> then own IP should/hostname should be retrieved
->> maybe allow for multiple simultaneous links (rooms) also in the request-uri
+WILD THINKING AND TESTING
+
+? can I launch 2 scratch instances and connect to two nodejs servers?
+
+? does scratch-extensions support events too?  or should we check reporters ourselves in a loop and then forward into scratch-world with a message/signal?
 
 
- can we have an event too? >> or should we write own poll loops that send signal?
 
+SRACTH-EXTENSION-STUFF:
 
+- check other aspects of the extension SPI
 See: 
 http://scratch.mit.edu/discuss/topic/18117/
 
-extension files should have extension .s2e >> we should include the file in the nodejs-ecpress distro and survice it over the web?
+- better resources?
 
-the localhost should send a crossdomain policy file
+- extension files should have extension .s2e >> we should include the file in the nodejs-ecpress distro and survice it over the web?
 
-we should listen to /reset_all
+- the localhost should send a crossdomain policy file
+
+- we should listen to /reset_all ? why and how?
 
 
 
-See also:
-nodejs discovery en/of peer-2-peer systeempje
-mogelijke kandidaten:
+DISCOVERY STUFF
+nodejs discovery library
 https://npmjs.org/package/polo
+
+not tested alternatives?
 https://npmjs.org/package/discovery-network
 https://npmjs.org/package/hook.io
 
 
 
+AMBITION / PLAN / SUGGESTIONS
+
+- autodiscovery by using polo making it easier on the usage side of things
+- so: simply launch nodejs with as little CLI args as possible
+- and: configure and connect through nodejs-express pages (browser-admin) in stead
+
+- foresee some debugging mode (in browser preferably) to see messages pass by
+
+- allow for queue of messages to be kept, 
+   ==> so state to poll would be set of vars
+    * lastNR, nextNR, lastARG0, nextARG0
+  ==> and foresee different calls to 
+    * /send/:arg0 and 
+    * /next (no args) 
+
+- let the *.s2e file (scratch-extension-json) be generated and saved + hooked up into scratch
+- maybe allow multiple connections through generated connection-prefixes
+  so when you connect karel to marc you generate a s2e with associated extension-name and prefixe command-blocks + messaging URIs
+
+- check for the "do-and-wait" variants of the messages (scratch has support through sync id of command)
+
+- allow for multi-argument passing? /send/:arg0/:arg1/:arg2
+- Maybe at connect time in browser interface you can name your args?  So you don't have ARG0 monikers?
+- does-should be set on one side (service-setup) and transfered to connecting side (service-connect)
 
