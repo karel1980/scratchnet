@@ -1,21 +1,40 @@
-Component Overview
-==================
+# System Design / Component Breakdown
 
-- Master Directory and Discovery (possibly in distributed implementation)
-- Service Connector & Enabler
-- Service Editor & Provisioning
-- Communication Service
+## Component Overview
+
+The system should be split up in the following separate levels of respoinsibility
+
+- [dir] Master Directory and Discovery (possibly in distributed implementation)
+- [mngr] Service Connector & Enabler
+- [editor] Service Editor & Provisioning
+- [comm] Communication Service
+
 
 ## Contracts and responsibilities
+
+The interplay of things is such
+
+| client (asks) | service          | (to perform) actions |
+| ------------- | ---------------- | ---------------------|
+| mngr          | dir(@discovered) | retrieve a list of available (other) managers and their listed services / connection opportunities |
+| mngr          | editor           | retrieve list of available service definitions |
+| mngr          | mngr(@peer)      | exchange connection params (ip/ports) during connection setup leading to comm creation |
+| mngr          | comm             | instantiation (not a real service call) |
+| browser       | mngr             | deploy services (using service defintions) and connect to others |
+| browser       | mngr             | download *.s2e definition file associated to established connection |
+| browser       | editor           | create service definitions |
+| browser       | comm             | debug and status-checks |
+| comm          | comm(@peer)      | exchange messages & check connection health (heartbeat) |
+| scratch2      | comm             | call messaging + poll en reset |
 
 Building up the complete system from the bottom up.
 Describing the service contracts each of these components should build up.
 
 
-### Actual Communication Service Instance
+### [comm] Actual Communication Service Instance
 
-Based on a config file describing:
-* connection details of local ports and connectin peer (ip/hostname + port)
+Based on a config object describing:
+* connection details of local ports and connection peer (ip/hostname + port)
 * the messaging layout to support (messages, arguments, reported states)
 
 .. it is the responsibility of this component to enable the actual communication and implement the extension hook towards scratch.
@@ -28,9 +47,13 @@ To this purpose this service will open
         * the standard scratch contract (/poll /reset_all)
         * the actual configured messaging service
 
+*Note - Security*
 Since these last aspects can be shut off to only localhost - the protocol binding could be on 127.0.0.1 (disabling messages from outside)
 
 However, that will force to use another communication mechanism (sockets) to actually receive/send the messages to/from the connected peer.
+
+*Note - Dependency Mocking*
+The config object will evemtually be passed down from the [mngr] (who got some of it from the [editor]) -  we can foresee a mock-hardwired file of these settings to get us started without those higher-level-functionality-beasts being ready.
 
 
 #### Communication Interface
@@ -48,10 +71,10 @@ TODO: decide, describe...
 1. GET /admin 
 returns HTML service-home page with links to following:
 
-if available: a link-back to the service-enabler-service (see further)
+if available: a link-back to the [mngr] (see further)
 
 1. GET /admin/debug
-retruns HTML page that regularly (in auto mode) or upon request (in manual mode)  show the return of the /poll request
+returns HTML page that regularly (in auto mode) or upon request (in manual mode)  show the return of the /poll request
 
 1. POST /admin/reset
 trigger scratch reset message
@@ -77,24 +100,38 @@ TODO: body describing state vars, wait ids, communication vars, erros,...
 1. GET /{signal_xyz}/:{arg0}/:{arg1}/...
 
 
-### Local Service Editor
+### [editor] Local Service Editor
 
-TODO: flesh out some more
+Gerenal idea: a single page (browser-side) js-UI component that allows editing the essential elements of the actual communication-config elements + a REST API to persist and manage those.  (persistence as simple json on disk should suffice)
 
-Gerenal idea: a single page js-UI component that allows editing the essential elements of the actual communication-config elements.
-
-Have to give it some more thought, but seems to be set of
-* abstract service name
+Have to give the content-model some further more thought, but seems to be that each service-config is a set of
+* abstract service name --> recycle into filename for storage
 * messages/signals to communicate and their arguments
 
 
-### Local Service Connector and Enabler
+#### REST Management Interface
+1. GET /configs/   >> listing
+1. PUT /configs/:configname
+1. GET /configs/:configname
+1. DELETE /configs/:configname
+
+#### WebPage-Components
+1. GET /configs-ui/index.html
+1. GET /configs-ui/css/main.css
+1. GET /configs-ui/js/ui.js
+
+Together these provide a browser based client to the above REST API
+
+
+### [mngr] Local Service Connector and Enabler
 
 This service will allow to 
 * be inspected: reporting and transferring its communication scheme
-* accept a communication peer (only one)
+* select a service-scheme (from the editor) and publish it as an available service
+* accept a communication peer (only one per service)
 * instantiate/create the actual communication service instance
-* heartbeat-check its connected peer
+* link up to a communication peer and connect up to an available service
+* heartbeat-check its connected peer(s)
 * report its connection status (peer identification and heartbeat status)
 
 
