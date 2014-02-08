@@ -1,14 +1,13 @@
-/* Module handling the actual communication between connected peers
- * as well as obey the contract towards scratch
+/*
+ * The javascript being launched.
+ *   Instantiates all componentens, organizes dependency injection
  */
 
-// TODO: 
-//  - rewrite to fit the module structure
-//  - rewrite to get config passed in (rather then use CLI args)
-//  - investigate into other connection then http between peers
-//  - then close down port to only localhost (ensuring scratch only calls)
-//  - investigate in more scratch features
-//  - look into fitting in with the other aspects of the bigger picture
+// TODO
+//  - rewrite to fit the discription
+//  - foresee gradual step by step achievement of the goals through mocks and shortcuts
+
+
 
 var http=require('http');
 var express=require('express');
