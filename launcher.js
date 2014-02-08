@@ -8,71 +8,17 @@
 //  - foresee gradual step by step achievement of the goals through mocks and shortcuts
 
 
-
-var http=require('http');
-var express=require('express');
-
-var port = Number(process.argv[2]);
-var otherhost = process.argv[3];
-var otherport = Number(process.argv[4]);
-
-/*
-fs = require('fs');
-fs.readFile('extension.json', 'utf-8', function(err,data) {
-  var ext = JSON.parse(data);
-  var port = ext.extensionPort;
-});
-*/
+var path = require('path');
+var comm = require('./comm');
 
 
-var app = express();
-var count = 0;
-var nextLine = '-stil-';
+// TODO: is there a way to nicely handle CLI args in node? - then decide on ways to trigger
+// for now we hardcode the 'config we need from a json file at ./test/launcher/comm-local-2001.json and ./test/launcher/comm-local-2002.json
 
-//
-// called by scratch 
-//
-app.get('/send/:msg', function(req, res){
-  console.log("sending " + req.param('msg'));
-  var options = {
-    host: otherhost,
-    port: otherport,
-    path: '/receive/' + req.param('msg')
-  };
+var confId = Number(process.argv[2] || 2001);
+var confFile = path.join(__dirname, 'test', 'launcher', 'comm-local-'+ confId + '.json');
+var conf = require(confFile);
 
-  callback = function(response) {
-    var str = '';
-    //another chunk of data has been recieved, so append it to `str`
-    response.on('data', function (chunk) {
-      str += chunk;
-    });
-    //the whole response has been recieved, so we just print it out here
-    response.on('end', function () {
-      console.log("completed sending");
-      console.log("response was " + str);
-      // we don't really care about the response
-    });
-  }
+comm(conf);
+return;
 
-  http.request(options, callback).end();
-  res.send('ok');
-});
-
-app.get('/nextLine', function(req, res){
-  res.send('ok');
-});
-
-app.get('/poll', function(req, res){
-  res.send('line ' + nextLine);
-});
-
-//
-// called by other
-//
-app.get('/receive/:msg', function(req, res){
-  console.log("received " + req.param('msg'));
-  nextLine = req.param('msg');
-  res.send('ok');
-});
-
-app.listen(port);
