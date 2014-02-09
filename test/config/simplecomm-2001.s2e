@@ -7,6 +7,7 @@
     ["r", "ErnieSaysNext", "line"],
     ["r", "ErnieSaidLast", "last"],
     ["r", "BertsPtr", "ptr"],
-    ["r", "ErniesCount", "top"]
+    ["r", "ErniesCount", "top"],
+    ["b", "ErnieIsActive", "hasNext"]
   ]
 }

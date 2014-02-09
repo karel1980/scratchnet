@@ -23,6 +23,20 @@ function createCommunication (conf) {
     return new Communication(conf);
 }
 
+/* code to detect own ip address(es
+var os=require('os');
+var ifaces=os.networkInterfaces();
+for (var dev in ifaces) {
+  var alias=0;
+  ifaces[dev].forEach(function(details){
+    if (details.family=='IPv4') {
+      console.log(dev+(alias?':'+alias:''),details.address);
+      ++alias;
+    }
+  });
+}
+*/
+
 function parseIpPort(ipport) {
   var parts = ipport.split(":")
   if (parts.length == 1) {
@@ -32,48 +46,16 @@ function parseIpPort(ipport) {
   return {host: parts[0], port: parts[1]};
 }
 
-function makeProtoStrategy(proto){
+function makeProtoStrategy(proto, connect){
     // TODO 
     // - actually make strategy object to handle communication based on type
     // - and allow for more complicated message-layouts (more arguments)
     // - consider posting json over HTTP (in the body) or using socket.io
-    return proto;
-}
+    var protoStrategy = {};
+    protoStrategy.sendToPeer = function(opts) {
+        utils.merge(opts, connect);
 
-function makeServiceStrategy(srv) {
-    // TODO 
-    return srv;
-}
-
-function Communication( conf, express) {
-    this.bind    = parseIpPort(conf.bind);
-    this.connect = parseIpPort(conf.connect);
-    this.protocol = makeProtoStrategy(conf.protocol);
-    this.service = makeServiceStrategy(conf.service);
-    
-    this.app = expr();
-
-    this.init();
-    this.start();
-}
-
-Communication.prototype.init = function() {
-    console.log("bind     - " + this.bind.host +    " : " + this.bind.port);
-    console.log("connect  - " + this.connect.host + " : " + this.connect.port);
-    
-    var connect = this.connect;
-    
-    
-    function sendToPeer(msg) {
-        console.log("sending " + msg);
-        
-        //TODO use protocol-strategy in stead.
-        var options = {
-            path: '/receive/' + encodeURIComponent(msg)
-        };
-        utils.merge(options, connect);
-        
-        callback = function(response) {
+        var ignoringResponse = function(response) {
             var str = '';
             //another chunk of data has been recieved, so append it to `str`
             response.on('data', function (chunk) {
@@ -81,62 +63,137 @@ Communication.prototype.init = function() {
             });
             //the whole response has been recieved, so we just print it out here
             response.on('end', function () {
-                console.log("completed sending");
-                console.log("response was " + str);
+                console.log("  .. completed sending // ignoring response " + str);
                 // we don't really care about the response
             });
             //what if there is an error?
             response.on('error', function(err){
-                console.log("there was an error communicating to peer..: " + err.message);
+                console.log("  !! there was an error communicating to peer..: " + err.message);
             })
         }
 
-        var req = http.request(options, callback)
+        var req = http.request(opts, ignoringResponse);
         req.on('error', function(err){
-            console.log("there was an error communicating to peer..: " + err.message);
-        })
+            console.log("  !! there was an error connecting to peer..: " + err.message);
+        });
         req.end();
+    };
+    return protoStrategy;
+}
+
+function makeServiceStrategy(srv) {
+    // TODO 
+    return srv;
+}
+
+function scratchPollString(s) {
+    s = s || "";
+    s = s.replace(/ /g, '_'); //Sadly the poll response does not properly support spaces.
+    return encodeURIComponent(s);
+}
+
+function Communication( conf, express) {
+    this.bind       = parseIpPort(conf.bind);
+    this.connect    = parseIpPort(conf.connect);
+    this.protocol   = makeProtoStrategy(conf.protocol, this.connect);
+    this.service    = makeServiceStrategy(conf.service);
+    
+    this.app = expr();
+
+    this.init();
+    this.start();
+}
+
+Communication.prototype.reset = function() {
+    console.log('<< reset >>');
+    this.queue = {};
+    this.top = 0;
+    this.ptr = 0;
+    this.last = "";
+    this.line = "";
+    this._error = null;
+}
+
+Communication.prototype.enqueue = function(msg) {
+    this.last = msg;
+    this.top++;
+    this.queue[this.top] = msg;
+    this._error = null;
+}
+
+Communication.prototype.dequeue = function() {
+    if (this.ptr < this.top) {
+        delete this.queue[this.ptr];
+        this.ptr++; 
+        this.line = this.queue[this.ptr];
+    }
+}
+
+
+Communication.prototype.init = function() {
+    console.log("bind     - " + this.bind.host +    " : " + this.bind.port);
+    console.log("connect  - " + this.connect.host + " : " + this.connect.port);
+    
+    this.reset();
+    var me = this;
+
+    function sendReset() {
+        console.log("transfer reset request");
+        me.protocol.sendToPeer({ path: '/reset_all?from=peer' });               
     }
     
-    var queue = {};
-    var top = 0;
-    var ptr = 0;
-    var last = "";
-    var line = "";
+    function sendMessage(msg) {
+        console.log("sending " + msg);
+        me.protocol.sendToPeer({ path: '/receive/' + encodeURIComponent(msg) });               
+    }
     
     //
     // called by scratch 
     //
     this.app.get('/send/:msg', function(req, res){
         var msg = req.param('msg');
-        sendToPeer(msg);
-        res.setHeader('content-type', 'text/plain');
+        sendMessage(msg);
+        res.setHeader('Content-Type', 'text/plain');
         res.send('ok');
     });
 
     this.app.get('/next', function(req, res){
-        if (ptr < top) {
-            delete queue[ptr];
-            ptr++; 
-            line = queue[ptr];
-            console.log('next-line = ' + line);
-        }
-        res.setHeader('content-type', 'text/plain');
+        me.dequeue();
+        console.log('next-line @' + me.ptr + ' = ' + me.line);
+
+        res.setHeader('Content-Type', 'text/plain');
         res.send('ok');
     });
 
     this.app.get('/poll', function(req, res){
         var poll = '';
-        poll += 'line ' + line + '\n';
-        poll += 'last ' + last + '\n';
-        poll += 'ptr '  + ptr  + '\n';
-        poll += 'top '  + top  + '\n';
-        //poll += 'hasNext '  + (top != ptr)  + '\n';
+        poll += 'line ' + scratchPollString(me.line) + '\n';
+        poll += 'last ' + scratchPollString(me.last) + '\n';
+        poll += 'ptr '  + me.ptr  + '\n';
+        poll += 'top '  + me.top  + '\n';
+        poll += 'hasNext '  + (me.top != me.ptr)  + '\n';
+        if (!!me._error) {
+            poll += '_error ' + me._error + '\n';
+        }
         
-        res.setHeader('content-type', 'text/plain');
+        res.setHeader('Content-Type', 'text/plain');
         res.send(poll);
     });
 
+    // 
+    // called by scratch OR by other
+    this.app.get('/reset_all', function(req, res){
+        me.reset();
+        
+        if (req.query.from != "peer") {
+            sendReset(); // Transfer the resetting to the other side
+        } else {
+            me._error = "Connection reset by peer!";
+        }
+        
+        res.setHeader('Content-Type', 'text/plain');
+        res.send('ok');
+    });
 
     //
     // called by other
@@ -144,11 +201,9 @@ Communication.prototype.init = function() {
     this.app.get('/receive/:msg', function(req, res){
         var msg = req.param('msg')
         console.log("received " + msg);
-        last = msg;
-        top++;
-        queue[top] = msg;
+        me.enqueue(msg);
 
-        res.setHeader('content-type', 'text/plain');
+        res.setHeader('Content-Type', 'text/plain');
         res.send('ok');
     });
 
