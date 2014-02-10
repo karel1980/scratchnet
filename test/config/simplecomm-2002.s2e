@@ -1,0 +1,13 @@
+{ 
+  "extensionName": "Ernie To Bert",
+  "extensionPort": 2002,
+  "blockSpecs": [
+    [" ", "Ernie to Bert %s", "send", 1],
+    [" ", "Next From Bert", "next"],
+    ["r", "BertSaysNext", "line"],
+    ["r", "BertSaidLast", "last"],
+    ["r", "ErniesPtr", "ptr"],
+    ["r", "BertsCount", "top"],
+    ["b", "BertIsActive", "hasNext"]    
+  ]
+}

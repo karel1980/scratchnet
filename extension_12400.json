@@ -1,9 +1,0 @@
-{ 
-  "extensionName": "CE-12400",
-  "extensionPort": 12400,
-  "blockSpecs": [
-    [" ", "CE-12400-Verstuur %s", "send", 1],
-    [" ", "CE-12400-Volgende", "nextLine"],
-    ["r", "CE-12400-lijn", "line"]
-  ]
-}

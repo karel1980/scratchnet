@@ -1,67 +1,217 @@
-var http=require('http');
-var express=require('express');
+/* Module handling the actual communication between connected peers
+ * as well as obey the contract towards scratch
+ */
 
-var port = Number(process.argv[2]);
-var otherhost = process.argv[3];
-var otherport = Number(process.argv[4]);
+// TODO: 
+//  - rewrite to fit the module structure
+//  - rewrite to get config passed in (rather then use CLI args)
+//  - investigate into other connection then http between peers
+//  - then close down port to only localhost (ensuring scratch only calls)
+//  - investigate in more scratch features
+//  - look into fitting in with the other aspects of the bigger picture
 
-/*
-fs = require('fs');
-fs.readFile('extension.json', 'utf-8', function(err,data) {
-  var ext = JSON.parse(data);
-  var port = ext.extensionPort;
-});
+var http = require('http');
+var expr = require('express');
+
+var connect = require('connect');
+var utils = connect.utils;
+
+
+exports = module.exports = createCommunication;
+
+function createCommunication (conf) {
+    return new Communication(conf);
+}
+
+/* code to detect own ip address(es
+var os=require('os');
+var ifaces=os.networkInterfaces();
+for (var dev in ifaces) {
+  var alias=0;
+  ifaces[dev].forEach(function(details){
+    if (details.family=='IPv4') {
+      console.log(dev+(alias?':'+alias:''),details.address);
+      ++alias;
+    }
+  });
+}
 */
 
-
-var app = express();
-var count = 0;
-var nextLine = '-stil-';
-
-//
-// called by scratch 
-//
-app.get('/send/:msg', function(req, res){
-  console.log("sending " + req.param('msg'));
-  var options = {
-    host: otherhost,
-    port: otherport,
-    path: '/receive/' + req.param('msg')
-  };
-
-  callback = function(response) {
-    var str = '';
-    //another chunk of data has been recieved, so append it to `str`
-    response.on('data', function (chunk) {
-      str += chunk;
-    });
-    //the whole response has been recieved, so we just print it out here
-    response.on('end', function () {
-      console.log("completed sending");
-      console.log("response was " + str);
-      // we don't really care about the response
-    });
+function parseIpPort(ipport) {
+  var parts = ipport.split(":")
+  if (parts.length == 1) {
+    parts[1] = parts[0];
+    parts[0] = "127.0.0.1";
   }
+  return {host: parts[0], port: parts[1]};
+}
 
-  http.request(options, callback).end();
-  res.send('ok');
-});
+function makeProtoStrategy(proto, connect){
+    // TODO 
+    // - actually make strategy object to handle communication based on type
+    // - and allow for more complicated message-layouts (more arguments)
+    // - consider posting json over HTTP (in the body) or using socket.io
+    var protoStrategy = {};
+    protoStrategy.sendToPeer = function(opts) {
+        utils.merge(opts, connect);
 
-app.get('/nextLine', function(req, res){
-  res.send('ok');
-});
+        var ignoringResponse = function(response) {
+            var str = '';
+            //another chunk of data has been recieved, so append it to `str`
+            response.on('data', function (chunk) {
+                str += chunk;
+            });
+            //the whole response has been recieved, so we just print it out here
+            response.on('end', function () {
+                console.log("  .. completed sending // ignoring response " + str);
+                // we don't really care about the response
+            });
+            //what if there is an error?
+            response.on('error', function(err){
+                console.log("  !! there was an error communicating to peer..: " + err.message);
+            })
+        }
 
-app.get('/poll', function(req, res){
-  res.send('line ' + nextLine);
-});
+        var req = http.request(opts, ignoringResponse);
+        req.on('error', function(err){
+            console.log("  !! there was an error connecting to peer..: " + err.message);
+        });
+        req.end();
+    };
+    return protoStrategy;
+}
 
-//
-// called by other
-//
-app.get('/receive/:msg', function(req, res){
-  console.log("received " + req.param('msg'));
-  nextLine = req.param('msg');
-  res.send('ok');
-});
+function makeServiceStrategy(srv) {
+    // TODO 
+    return srv;
+}
 
-app.listen(port);
+function scratchPollString(s) {
+    s = s || "";
+    s = s.replace(/ /g, '_'); //Sadly the poll response does not properly support spaces.
+    return encodeURIComponent(s);
+}
+
+function Communication( conf, express) {
+    this.bind       = parseIpPort(conf.bind);
+    this.connect    = parseIpPort(conf.connect);
+    this.protocol   = makeProtoStrategy(conf.protocol, this.connect);
+    this.service    = makeServiceStrategy(conf.service);
+    
+    this.app = expr();
+
+    this.init();
+    this.start();
+}
+
+Communication.prototype.reset = function() {
+    console.log('<< reset >>');
+    this.queue = {};
+    this.top = 0;
+    this.ptr = 0;
+    this.last = "";
+    this.line = "";
+    this._error = null;
+}
+
+Communication.prototype.enqueue = function(msg) {
+    this.last = msg;
+    this.top++;
+    this.queue[this.top] = msg;
+    this._error = null;
+}
+
+Communication.prototype.dequeue = function() {
+    if (this.ptr < this.top) {
+        delete this.queue[this.ptr];
+        this.ptr++; 
+        this.line = this.queue[this.ptr];
+    }
+}
+
+
+Communication.prototype.init = function() {
+    console.log("bind     - " + this.bind.host +    " : " + this.bind.port);
+    console.log("connect  - " + this.connect.host + " : " + this.connect.port);
+    
+    this.reset();
+    var me = this;
+
+    function sendReset() {
+        console.log("transfer reset request");
+        me.protocol.sendToPeer({ path: '/reset_all?from=peer' });               
+    }
+    
+    function sendMessage(msg) {
+        console.log("sending " + msg);
+        me.protocol.sendToPeer({ path: '/receive/' + encodeURIComponent(msg) });               
+    }
+    
+    //
+    // called by scratch 
+    //
+    this.app.get('/send/:msg', function(req, res){
+        var msg = req.param('msg');
+        sendMessage(msg);
+        res.setHeader('Content-Type', 'text/plain');
+        res.send('ok');
+    });
+
+    this.app.get('/next', function(req, res){
+        me.dequeue();
+        console.log('next-line @' + me.ptr + ' = ' + me.line);
+
+        res.setHeader('Content-Type', 'text/plain');
+        res.send('ok');
+    });
+
+    this.app.get('/poll', function(req, res){
+        var poll = '';
+        poll += 'line ' + scratchPollString(me.line) + '\n';
+        poll += 'last ' + scratchPollString(me.last) + '\n';
+        poll += 'ptr '  + me.ptr  + '\n';
+        poll += 'top '  + me.top  + '\n';
+        poll += 'hasNext '  + (me.top != me.ptr)  + '\n';
+        if (!!me._error) {
+            poll += '_error ' + me._error + '\n';
+        }
+        
+        res.setHeader('Content-Type', 'text/plain');
+        res.send(poll);
+    });
+
+    // 
+    // called by scratch OR by other
+    this.app.get('/reset_all', function(req, res){
+        me.reset();
+        
+        if (req.query.from != "peer") {
+            sendReset(); // Transfer the resetting to the other side
+        } else {
+            me._error = "Connection reset by peer!";
+        }
+        
+        res.setHeader('Content-Type', 'text/plain');
+        res.send('ok');
+    });
+
+    //
+    // called by other
+    //
+    this.app.get('/receive/:msg', function(req, res){
+        var msg = req.param('msg')
+        console.log("received " + msg);
+        me.enqueue(msg);
+
+        res.setHeader('Content-Type', 'text/plain');
+        res.send('ok');
+    });
+
+}
+
+Communication.prototype.start = function(app) {
+    this.app.listen(this.bind.port);    
+}
+
+
+
