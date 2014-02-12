@@ -116,7 +116,8 @@ Communication.prototype.reset = function() {
 
 Communication.prototype.enqueue = function(msg) {
     this.last = msg;
-    this.top++;
+    if (this.ptr == this.top) this.line = msg; // publish immediately!
+    this.top++; // forces the 'available' boolean
     this.queue[this.top] = msg;
     this._error = null;
 }
@@ -125,7 +126,7 @@ Communication.prototype.dequeue = function() {
     if (this.ptr < this.top) {
         delete this.queue[this.ptr];
         this.ptr++; 
-        this.line = this.queue[this.ptr];
+        this.line = this.queue[this.ptr]; // advance to next - possibly last
     }
 }
 
@@ -157,9 +158,9 @@ Communication.prototype.init = function() {
         res.send('ok');
     });
 
-    this.app.get('/next', function(req, res){
+    this.app.get('/ack', function(req, res){
         me.dequeue();
-        console.log('next-line @' + me.ptr + ' = ' + me.line);
+        console.log('ack @' + me.ptr + ' = ' + me.line);
 
         res.setHeader('Content-Type', 'text/plain');
         res.send('ok');
@@ -171,7 +172,7 @@ Communication.prototype.init = function() {
         poll += 'last ' + scratchPollString(me.last) + '\n';
         poll += 'ptr '  + me.ptr  + '\n';
         poll += 'top '  + me.top  + '\n';
-        poll += 'hasNext '  + (me.top != me.ptr)  + '\n';
+        poll += 'hasNext '  + (me.top > me.ptr)  + '\n';
         if (!!me._error) {
             poll += '_error ' + me._error + '\n';
         }
