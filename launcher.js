@@ -16,7 +16,7 @@ var comm = require('./comm');
 // for now we hardcode the 'config we need from a json file at ./test/launcher/comm-local-2001.json and ./test/launcher/comm-local-2002.json
 
 var confId = Number(process.argv[2] || 2001);
-var confFile = path.join(__dirname, 'test', 'launcher', 'comm-local-'+ confId + '.json');
+var confFile = path.join(__dirname, 'test-config', 'launcher', 'comm-local-'+ confId + '.json');
 var conf = require(confFile);
 
 comm(conf);
