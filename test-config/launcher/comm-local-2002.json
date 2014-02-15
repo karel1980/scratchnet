@@ -1,8 +1,0 @@
-{ 
-    "bind"    : "2002",
-    "connect" : "localhost:2001",
-    "protocol": "http",
-    "service" : {
-        "send": [{"name": "msg"}]
-    }
-}

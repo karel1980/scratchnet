@@ -1,0 +1,10 @@
+{ 
+    "port": 2001,
+    "id": "Bert",
+    "comms": { 
+        "chat" : {
+            "connect" : "localhost:2002",
+            "service" : "layout-chat"
+        }
+    }
+}

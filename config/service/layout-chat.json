@@ -1,0 +1,29 @@
+{
+    "id": "chat-1.0",                "name": "Chat 1.0",
+    "description": "Een protocol om chat-berichten tussen gelijkwaardige spelers te sturen.",
+    
+    "type": "peer",
+    "messages" :[
+        { 
+            "id": "send",
+            "name": "Zend naar %peer",
+            "args": [
+                {
+                    "id": "msg",      "name": "Boodschap van %peer",
+                    "description":    "Het volgende bericht van %peer"
+                }
+             ],
+             "queue" : {
+                "indicator" : {
+                    "id": "hasmsg",   "name": "Boodschap Beschikbaar van %peer"
+                },
+                "ack" : {
+                    "id": "ack",      "name": "Boodschap Gelezen"               
+                },
+                "topview" : {
+                    "id" : "topmsg",  "name" : "Laatste Boodschap van %peer"
+                }
+            }
+        }
+    ]
+}
