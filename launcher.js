@@ -25,14 +25,13 @@ comm(conf);
  * Continuously print the number of registered services
  * (when you have 2 'node launcher.js' processes it should print '2')
  */
-var mydir = dir.dir();
+var mydir = dir();
 
 mydir.register('hello-' + Math.random(), 'localhost', Number(confId));
 
 var show = function() {
    console.log(mydir.services)
 }
-
 
 return;
 
