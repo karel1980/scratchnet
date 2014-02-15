@@ -65,8 +65,7 @@ for (commId in conf.comms) {
 
 app.listen(conf.port);    
 
-var ip = "localhost"; // TODO detect local IP
-console.log("["+id+"] launched @"+ip+" : "+conf.port);
+console.log("["+id+"] launched on port : "+conf.port);
 
 return;
 
