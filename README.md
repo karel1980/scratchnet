@@ -1,3 +1,9 @@
+# Running the tests:
+
+    npm install -g mocha
+
+    mocha
+
 # Introduction
 
 This extension lets two scratch instances communicate with each other via a helper webapp implemented by nodejs.

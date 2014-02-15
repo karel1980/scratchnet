@@ -9,17 +9,24 @@
 
 
 var path = require('path');
-var comm = require('./comm');
 var http = require('http');
 var expr = require('express');
-
 var connect = require('connect');
 var utils = connect.utils;
+
+var dir = require('./lib/dir');
+var comm = require('./lib/comm');
+
+
 
 function _loadConf (type, id) {
     var file = path.join(__dirname, 'config', type, id + '.json');
     return require(file);
 }
+var show = function() {
+   console.log(mydir.services)
+}
+
 
 
 // TODO: is there a way to nicely handle CLI args in node? 
@@ -38,6 +45,16 @@ app.get("/_id", function(req, res ) {
 });
 
 
+/* 
+ * Continuously print the number of registered services
+ * (when you have 2 'node launcher.js' processes it should print '2')
+ */
+var mydir = dir.dir();
+
+mydir.register('hello-' + Math.random(), 'localhost', Number(confId));
+
+
+
 //TODO - for now, creation of comms should be probably delegated to the mngr component
 for (commId in conf.comms) {
     var commConf = conf.comms[commId];
@@ -50,5 +67,6 @@ app.listen(conf.port);
 
 var ip = "localhost"; // TODO detect local IP
 console.log("["+id+"] launched @"+ip+" : "+conf.port);
+
 return;
 
