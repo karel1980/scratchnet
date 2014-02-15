@@ -37,6 +37,7 @@ var conf = _loadConf('launcher', (id || "me"));
 
 conf.id = conf.id || id;
 id = conf.id;
+conf.port = Number(conf.port);
 
 var app = expr();
 app.get("/_id", function(req, res ) {
@@ -51,7 +52,7 @@ app.get("/_id", function(req, res ) {
  */
 var mydir = dir();
 
-mydir.register('hello-' + Math.random(), 'localhost', Number(confId));
+mydir.register('hello-' + Math.random(), 'localhost', conf.port);
 
 
 
