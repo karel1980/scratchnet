@@ -9,6 +9,7 @@
 
 
 var path = require('path');
+var dir = require('./lib/dir');
 var comm = require('./lib/comm');
 
 // TODO: is there a way to nicely handle CLI args in node? - then decide on ways to trigger
@@ -19,5 +20,20 @@ var confFile = path.join(__dirname, 'test', 'launcher', 'comm-local-'+ confId + 
 var conf = require(confFile);
 
 comm(conf);
+
+/* 
+ * Continuously print the number of registered services
+ * (when you have 2 'node launcher.js' processes it should print '2')
+ */
+var mydir = dir.dir();
+
+mydir.register('hello-' + Math.random(), 'localhost', 5555);
+
+var show = function() {
+   console.log(mydir.services.length)
+}
+
+setInterval(show, 2000);
+
 return;
 
