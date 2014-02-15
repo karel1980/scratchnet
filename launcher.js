@@ -37,7 +37,7 @@ var conf = _loadConf('launcher', (id || "me"));
 
 conf.id = conf.id || id;
 id = conf.id;
-conf.port = Number(conf.port);
+conf.port = Number(conf.port || 2000);
 
 var app = expr();
 app.get("/_id", function(req, res ) {
@@ -56,13 +56,24 @@ mydir.register('hello-' + Math.random(), 'localhost', conf.port);
 
 
 
-//TODO - for now, creation of comms should be probably delegated to the mngr component
+//TODO - for now, creation of comms and services should probably be delegated to the mngr component
+var services = {};
+for (var i = 0; i<conf.services.length; i++) {
+    var serv = conf.services[i];
+    servConf = _loadConf("service", serv);
+    servConf.id = servConf.id || serv;
+    services[servConf.id] = servConf;
+}
+conf.services = services; // replace
+
 for (commId in conf.comms) {
     var commConf = conf.comms[commId];
     commConf.id = commConf.id || commId;
-    commConf.service = _loadConf("service", commConf.service);
-    comm(app, commConf); // create and activate communciation-connections
+    commConf.service = services[commConf.service];
+    comm(expr, commConf); // create and activate communciation-connections
 }
+// -- end of stuff to move to mngr?
+
 
 app.listen(conf.port);    
 

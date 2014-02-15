@@ -12,7 +12,7 @@
                 ]
             },
             "response" : {
-                "id": "started",            "name": "Nieuw gokspel klaar",
+                "id": "started",            "name": "Nieuw gokspel klaar"
             }
         },
         {
@@ -28,14 +28,14 @@
                     {   "id": "seq",        "name": "volgnummer"    },
                     {   "id": "type",       "name": "Antwoord",
                         "opts": [
-                            {   "id": "ok", "name": "Correct",       },
-                            {   "id": "hi", "name": "Hoger dan",     },
-                            {   "id": "lo", "name": "Lager dan",     }
+                            {   "id": "ok", "name": "Correct"       },
+                            {   "id": "hi", "name": "Hoger dan"     },
+                            {   "id": "lo", "name": "Lager dan"     }
                         ]
                     },
-                    {   "id": "value",      "name": "getal"          }
+                    {   "id": "value",      "name": "getal"         }
                 ]
             }
-        },
+        }
     ]
 }
