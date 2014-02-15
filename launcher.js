@@ -27,13 +27,12 @@ comm(conf);
  */
 var mydir = dir.dir();
 
-mydir.register('hello-' + Math.random(), 'localhost', 5555);
+mydir.register('hello-' + Math.random(), 'localhost', Number(confId));
 
 var show = function() {
-   console.log(mydir.services.length)
+   console.log(mydir.services)
 }
 
-setInterval(show, 2000);
 
 return;
 
