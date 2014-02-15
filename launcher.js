@@ -9,8 +9,7 @@
 
 
 var path = require('path');
-var comm = require('./comm');
-
+var comm = require('./lib/comm');
 
 // TODO: is there a way to nicely handle CLI args in node? - then decide on ways to trigger
 // for now we hardcode the 'config we need from a json file at ./test/launcher/comm-local-2001.json and ./test/launcher/comm-local-2002.json
