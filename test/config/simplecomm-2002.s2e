@@ -3,7 +3,7 @@
   "extensionPort": 2002,
   "blockSpecs": [
     [" ", "Ernie to Bert %s", "send", 1],
-    [" ", "Next From Bert", "next"],
+    [" ", "Accepted from Bert", "ack"],
     ["r", "BertSaysNext", "line"],
     ["r", "BertSaidLast", "last"],
     ["r", "ErniesPtr", "ptr"],
