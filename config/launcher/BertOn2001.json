@@ -1,0 +1,14 @@
+{ 
+    "port": 2000,
+    "id": "Bert",
+    "services" : [
+        "chat-service", "number-guess-game"
+    ],
+    "comms": { 
+        "chat-with-ernie" : {
+            "bind"    : "2001",
+            "connect" : "localhost:2002",
+            "service" : "chat-1.0"
+        }
+    }
+}
