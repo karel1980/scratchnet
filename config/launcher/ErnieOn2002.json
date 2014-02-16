@@ -1,5 +1,5 @@
 { 
-    "port": 3000,
+    "port": 0,
     "id": "Ernie",
     "services" : [
         "chat-service", "number-guess-game"
