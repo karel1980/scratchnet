@@ -70,13 +70,11 @@ for (commId in conf.comms) {
     var commConf = conf.comms[commId];
     commConf.id = commConf.id || commId;
     commConf.service = services[commConf.service];
-    comm(expr, commConf); // create and activate communciation-connections
+    comm(commConf); // create and activate communciation-connections
 }
 // -- end of stuff to move to mngr?
 
-
 app.listen(conf.port);    
-
 console.log("["+id+"] launched on port : "+conf.port);
 
 return;
