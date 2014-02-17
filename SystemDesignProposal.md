@@ -57,21 +57,18 @@ The config object will evemtually be passed down from the [mngr] (who got some o
 
 
 #### Communication Interface
-1. Assuming HTTP
-POST /receive/:msg 
+1. POST /receive 
+with json BODY:
+{ call: "message-id", args: [...] }
 
-? should sender provide sequence-number for extra check
-? TODO solve space-sending issue
-
-1. Assuming socket/different mechanism
-TODO: decide, describe...
-
+1. GET /hbeat
+to check if the other end is still awake
 
 #### Admin Interface
 1. GET /admin 
-returns HTML service-home page with links to following:
+returns HTML service-home page with links to other :
 
-if available: a link-back to the [mngr] (see further)
+and if available/possible: a link-back to the [mngr] (see further)
 
 1. GET /admin/debug
 returns HTML page that regularly (in auto mode) or upon request (in manual mode)  show the return of the /poll request
@@ -82,9 +79,9 @@ trigger scratch reset message
 1. POST /admin/disconnect
 closes down the service
 
-1. GET /admin/extension-{name}.json
+1. GET /admin/extension.json
 produces the generated scratch-extension-service.json
-
+note: by using Content-Disposition Header, we should be able to specify a generated specific filename with *.s2e extension
 
 #### Scrath Interface
 
@@ -96,8 +93,11 @@ TODO: body describing state vars, wait ids, communication vars, erros,...
 1. GET /reset_all
 
 
+1. GET /call_{xyz}/:{arg0}/:{arg1}/...
 
-1. GET /{signal_xyz}/:{arg0}/:{arg1}/...
+possibly will need some variants : 
+- for request-response services /call_xyz-request versus /call_xyz-response 
+- for queued services a /call_xyz-ack to adcance the read-pointer
 
 
 ### [editor] Local Service Editor
@@ -110,23 +110,24 @@ Have to give the content-model some further more thought, but seems to be that e
 
 
 #### REST Management Interface
-1. GET /configs/   >> listing
-1. PUT /configs/:configname
-1. GET /configs/:configname
-1. DELETE /configs/:configname
+1. GET /_services/   >> listing
+1. PUT /_services/:servicename
+1. GET /_services/:servicename
+1. DELETE /_services/:configname
 
 #### WebPage-Components
-1. GET /configs-ui/index.html
-1. GET /configs-ui/css/main.css
-1. GET /configs-ui/js/ui.js
+1. GET /_editor/index.html
+1. GET /_editor/css/main.css
+1. GET /_editor/js/ui.js
 
-Together these provide a browser based client to the above REST API
+Together these provide a browser based client to actually manage and edit 
+the service-descriptions through the above REST API
 
 
 ### [mngr] Local Service Connector and Enabler
 
 This service will allow to 
-* be inspected: reporting and transferring its communication scheme
+* be inspected: reporting and transferring its presence, id, services, connections, ...
 * select a service-scheme (from the editor) and publish it as an available service
 * accept a communication peer (only one per service)
 * instantiate/create the actual communication service instance
@@ -136,9 +137,11 @@ This service will allow to
 
 
 
-### Centralised (or distributed) Directory and Discovery
+### [dir] Centralised (or distributed) Directory and Discovery
 
-Using polo we could build a central directory listing all available local node-isntances and the services they offer + are looking for connecting-peers?
-
+Using polo we could build a mechanism to detect locally running members of the gang.
+Through some master-selection mechanism these could agree on a central point through 
+which the various manager instances can communicate the availability of new 
+connection-peers and/or service-descriptions.
 
 
