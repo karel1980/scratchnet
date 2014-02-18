@@ -1,31 +1,28 @@
-# Running the tests:
-
-    npm install -g mocha
-
-    mocha
-
 # Introduction
 
-This extension lets two scratch instances communicate with each other via a helper webapp implemented by nodejs.
+This extension lets scratchnet instances on the local network connect to each other using predefined protocols.
 
-Both scratch instances need to run the nodejs app.
+*future* Whenever instances are connected a scratch extension file is generated which can be imported into scratch, providing blocks which allow communication between the 2 connected scratch instances.
 
+Both scratch instances need to run the nodejs app (launcher.js).
+
+# Tips
 You can add the extension in Scratch 2 by shift-clicking on 'File',
 then select import experimental extension. Under 'more blocks' you can find the blocks which allow you to communicate with the other instance.
 
-# Running the nodejs app:
+# Running the tests:
 
-First install dependencies by running the following command. You need to do this only once.
+    npm install -g mocha
+    mocha
 
-    npm install
+# Useful during development:
 
-Start the communication extension by running:
+## nodemon
 
-    node comm.js 12300 hostname 12300 
+Install using `npm install -g nodemon`
 
-The first argument is the port to listen on,
-the 2nd argument is the machine we'll be communicating with (hostname or ip).
-the 3rd argument is the port on the target machine
+Automatically restarts whenever a change is made to your code
 
-I've tried to run on localhost using two different ports and two scratch instances via 2 user accounts, but it didn't appear to work.
+    nodemon mngr.js 2000
+    nodemon mngr.js 2001
 

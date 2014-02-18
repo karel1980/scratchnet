@@ -6,6 +6,7 @@
   "dependencies": {
     "connect": "*",
     "express": "*",
-    "polo": "*"
+    "polo": "*",
+    "hogan-express": "*"
   }
 }
