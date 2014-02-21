@@ -3,11 +3,11 @@
   "extensionPort": 2002,
   "blockSpecs": [
     [" ", "Ernie to Bert %s", "send", 1],
-    [" ", "Accepted from Bert", "ack"],
-    ["r", "BertSaysNext", "line"],
-    ["r", "BertSaidLast", "last"],
-    ["r", "ErniesPtr", "ptr"],
-    ["r", "BertsCount", "top"],
-    ["b", "BertIsActive", "hasNext"]    
+    [" ", "Accepted from Bert", "send-ack"],
+    ["r", "BertSaysNext", "send-crnt-msg"],
+    ["r", "BertSaidLast", "send-last-msg"],
+    ["r", "ErniesPtr", "send-ptr"],
+    ["r", "BertsCount", "send-top"],
+    ["b", "BertIsActive", "send-hasNext"]    
   ]
 }
