@@ -8,8 +8,8 @@ var path = require('path');
 var http = require('http');
 var expr = require('express');
 
-var dir = require('./lib/dir');
-var comm = require('./lib/comm');
+var dir = require('../lib/dir');
+var comm = require('../lib/comm');
 
 
 
@@ -17,7 +17,7 @@ var comm = require('./lib/comm');
  * convenience method to load json-config locally stored per type.
  */
 function _loadConf (type, id) {
-    var file = path.join(__dirname, 'config', type, id + '.json');
+    var file = path.join(__dirname, '..', 'config', type, id + '.json');
     return require(file);
 }
 
