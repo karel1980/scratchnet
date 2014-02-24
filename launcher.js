@@ -7,8 +7,6 @@
 var path = require('path');
 var http = require('http');
 var expr = require('express');
-var connect = require('connect');
-var utils = connect.utils;
 
 var dir = require('./lib/dir');
 var comm = require('./lib/comm');
@@ -49,10 +47,6 @@ app.get("/_id", function(req, res ) {
     res.send(id);
 });
 
-// Create directory
-var mydir = dir();
-
-
 // Read local services from conf
 var services = {};
 for (var i = 0; i<conf.services.length; i++) {
@@ -71,7 +65,6 @@ for (commId in conf.comms) {
     comm(commConf); // create and activate communciation-connections
 }
 
-
 // Fire up the service
 conf.port = conf.port || 0; // if you don't have a preferred port choose 0 to allow the system to allocate one
 var server = http.createServer(app);
@@ -79,9 +72,6 @@ server.listen(conf.port, function() {
     var address = server.address();
     conf.port = address.port;
     console.log("[%s] launched on %j", id, address);
-    
-    // Register to dir component
-    mydir.register('hello-' + Math.random(), 'localhost', conf.port);
 });
 
 return;
