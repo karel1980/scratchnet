@@ -6,22 +6,22 @@
     "messages" :[
         { 
             "id": "send",
-            "name": "Zend naar %peer",
+            "name": "Zend naar %s",
             "args": [
                 {
-                    "id": "msg",      "name": "Boodschap van %peer",
-                    "description":    "Het volgende bericht van %peer"
+                    "id": "msg",      "name": "Boodschap van %s",
+                    "description":    "Het volgende bericht van %s"
                 }
              ],
              "queue" : {
                 "indicator" : {
-                    "id": "hasmsg",   "name": "Boodschap Beschikbaar van %peer"
+                    "id": "hasmsg",   "name": "Boodschap Beschikbaar van %s"
                 },
                 "ack" : {
                     "id": "ack",      "name": "Boodschap Gelezen"               
                 },
                 "topview" : {
-                    "id" : "topmsg",  "name" : "Laatste Boodschap van %peer"
+                    "id" : "topmsg",  "name" : "Laatste Boodschap van %s"
                 }
             }
         }

@@ -1,0 +1,37 @@
+{
+    "id": "hangman-1.0",                   "name": "Galgje",
+    "description": "Protocol voor vraag-en-antwoord galgje.",
+    "type": "request-response",
+    "messages" :[
+        {
+            "id": "start",
+            "request":  {                   "name": "Nieuw Galgje"
+             },
+            "response" : {                  "name": "Nieuw galgje klaar",
+                "args": {
+                    {   "id": "num",        "name": "Aantal Letters"    }
+                }
+            }
+        },
+        {
+            "id": "guess",
+            "request":  {                   "name": "Test letter:",
+                "args": [
+                    {   "id": "guess",      "name": "letter"           }
+                ]
+            },
+            "response" : {                  "name": "Letter resultaat",
+                "args": [
+                    {   "id": "guess",      "name": "letter"       },
+                    {   "id": "answ",       "name": "Antwoord",
+                        "opts": [
+                            {   "id": "not", "name": "Niet gevonden."   },
+                            {   "id": "at",  "name": "Gevonden op:"     },
+                        ]
+                    },
+                    {   "id": "posities",     "name": "positie"        }
+                ]
+            }
+        }
+    ]
+}
