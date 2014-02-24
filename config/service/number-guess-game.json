@@ -1,18 +1,18 @@
 {
-    "id": "guess-1.0",                     "name": "Number Guess 1.0",
+    "id": "guess-1.0",                     "name": "Nummer Raden",
     "description": "Protocol voor vraag-en-antwoord gokken naar getal.",
     "type": "request-response",
     "messages" :[
         {
             "id": "start",
-            "request":  {                   "name": "Nieuw gokspel",
+            "request":  {                   "name": "Nieuw raadspel",
                 "args": [
                     {   "id": "lo",         "name": "ondergrens"    },
-                    {   "id": "lo",         "name": "bovengrens"    }
+                    {   "id": "hi",         "name": "bovengrens"    }
                 ]
             },
             "response" : {
-                "id": "started",            "name": "Nieuw gokspel klaar"
+                "id": "started",            "name": "Nieuw raadspel klaar"
             }
         },
         {
@@ -23,7 +23,7 @@
                     {   "id": "guess",      "name": "gok"           }
                 ]
             },
-            "response" : {                  "name": "Te gokken getal is",
+            "response" : {                  "name": "Te raden getal is",
                 "args": [
                     {   "id": "seq",        "name": "volgnummer"    },
                     {   "id": "type",       "name": "Antwoord",
