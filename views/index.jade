@@ -14,7 +14,14 @@ block content
       h3 Lijst van comms
 
       ul
-        li chat
-        li guess
-        li hangman
+        li.linker chat
+        li.linker guess
+        li.linker hangman
+
+      script.
+        $(function() {
+          $(".linker").click(function() {
+            showLinkDialog($(this).text())
+          })
+        })
 
