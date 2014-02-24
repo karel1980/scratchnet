@@ -1,0 +1,27 @@
+extend layout
+
+block content
+  .container
+    .row
+      h3 Lijst van gevonden scratch-netters
+
+      each svc,key in services
+        ul
+          li #{svc.key} #{svc.params.isMe?"*me*":""} #{svc.params.isMaster?"*master*":""}
+        ul
+
+    .row
+      h3 Lijst van comms
+
+      ul
+        li.linker chat
+        li.linker guess
+        li.linker hangman
+
+      script.
+        $(function() {
+          $(".linker").click(function() {
+            showLinkDialog($(this).text())
+          })
+        })
+

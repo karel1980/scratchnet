@@ -1,0 +1,41 @@
+{
+    "id": "guess-1.0",                     "name": "Number Guess 1.0",
+    "description": "Protocol voor vraag-en-antwoord gokken naar getal.",
+    "type": "request-response",
+    "messages" :[
+        {
+            "id": "start",
+            "request":  {                   "name": "Nieuw gokspel",
+                "args": [
+                    {   "id": "lo",         "name": "ondergrens"    },
+                    {   "id": "lo",         "name": "bovengrens"    }
+                ]
+            },
+            "response" : {
+                "id": "started",            "name": "Nieuw gokspel klaar"
+            }
+        },
+        {
+            "id": "guess",
+            "request":  {                   "name": "Ik gok op",
+                "args": [
+                    {   "id": "seq",        "name": "volgnummer"    },
+                    {   "id": "guess",      "name": "gok"           }
+                ]
+            },
+            "response" : {                  "name": "Te gokken getal is",
+                "args": [
+                    {   "id": "seq",        "name": "volgnummer"    },
+                    {   "id": "type",       "name": "Antwoord",
+                        "opts": [
+                            {   "id": "ok", "name": "Correct"       },
+                            {   "id": "hi", "name": "Hoger dan"     },
+                            {   "id": "lo", "name": "Lager dan"     }
+                        ]
+                    },
+                    {   "id": "value",      "name": "getal"         }
+                ]
+            }
+        }
+    ]
+}

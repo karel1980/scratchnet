@@ -7,7 +7,7 @@
     "connect": "*",
     "express": "*",
     "polo": "*",
-    "hogan-express": "*",
+    "jade": "*",
     "underscore": "*",
     "request": "*"
   }
