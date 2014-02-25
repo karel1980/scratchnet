@@ -6,23 +6,21 @@
     "messages" :[
         { 
             "id": "send",
-            "name": "Zend naar %s",
+            "name": "Verstuur naar %s",
             "args": [
                 {
-                    "id": "msg",      "name": "Boodschap van %s",
-                    "description":    "Het volgende bericht van %s"
+                    "id": "msg",      
+                    "queue": {
+                        "crnt": "Volgend Bericht van %s",
+                        "last": "Laatste Bericht"
+                    }
                 }
              ],
              "queue" : {
-                "indicator" : {
-                    "id": "hasmsg",   "name": "Boodschap Beschikbaar van %s"
-                },
-                "ack" : {
-                    "id": "ack",      "name": "Boodschap Gelezen"               
-                },
-                "topview" : {
-                    "id" : "topmsg",  "name" : "Laatste Boodschap van %s"
-                }
+                "ack"    : "Bericht Gelezen",
+                "ptr"    : "VolgendNr",
+                "top"    : "LaatsteNr",
+                "hasnext": "Bericht Beschikbaar"
             }
         }
     ]
