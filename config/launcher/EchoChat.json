@@ -1,0 +1,14 @@
+{ 
+    "port" : 2000,
+    "id": "MeMyselfAndI",
+    "services" : [
+        "chat-service"
+    ],
+    "comms": { 
+        "chat-with-ernie" : {
+            "bind"    : "2001",
+            "connect" : {"host": "localhost", "port": 2001, "id": "MySelf"},
+            "service" : "chat-1.0"
+        }
+    }
+}
