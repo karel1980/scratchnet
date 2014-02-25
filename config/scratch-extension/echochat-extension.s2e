@@ -1,0 +1,1 @@
+{"extensionName":"Chat 1_0 MySelf","extensionPort":2001,"blockSpecs":[[" ","Verstuur naar MySelf %s","send","msg"],["r","Volgend Bericht van MySelf","send-crnt-msg"],["r","Laatste Bericht MySelf","send-last-msg"],[" ","Bericht Gelezen MySelf","send-ack"],["r","VolgendNr MySelf","send-ptr"],["r","LaatsteNr MySelf","send-top"],["b","Bericht Beschikbaar MySelf","send-hasNext"]]}
