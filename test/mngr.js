@@ -33,4 +33,8 @@ describe('mngr', function(){
 
   })
 
+  it('should handle invitations like a boss', function(done){
+    assert(false, "TODO: implement invitation tests")
+  })
+
 })
