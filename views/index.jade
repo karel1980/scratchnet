@@ -11,12 +11,11 @@ block content
         ul
 
     .row
-      h3 Lijst van services
+      h3 Lijst van beschikbare services
 
       ul
-        li.linker chat
-        li.linker guess
-        li.linker hangman
+        each svc,key in catalog
+          li.linker #{svc} #{key}
 
       script.
         $(function() {
@@ -27,3 +26,6 @@ block content
           //TODO: enable drag-n-drop between services and scratchnet instances
         })
 
+    .row
+      h3 Lijst van actieve links
+        TODO
