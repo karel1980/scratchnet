@@ -1,28 +1,36 @@
 # Introduction
 
-This extension lets scratchnet instances on the local network connect to each other using predefined protocols.
+This application lets different scratch instances on the local network
+task to each other.
 
-*future* Whenever instances are connected a scratch extension file is generated which can be imported into scratch, providing blocks which allow communication between the 2 connected scratch instances.
+NOTE: work in progress. The instructions below describe how it's intended to work
 
-Both scratch instances need to run the nodejs app (launcher.js).
+## Installation / Dependencies
 
-# Tips
-You can add the extension in Scratch 2 by shift-clicking on 'File',
-then select import experimental extension. Under 'more blocks' you can find the blocks which allow you to communicate with the other instance.
+    #TODO: verify this sequence on a fresh vm
+    npm install -g bower
+    bower init
+    npm install
 
-# Running the tests:
+## Start scratchnet
 
-    npm install -g mocha
-    mocha
+    node scratchnet.js
 
-# Useful during development:
+## Using scratchnet
 
-## nodemon
+After starting scratchnet, go to
 
-Install using `npm install -g nodemon`
+    http://localhost:2000
 
-Automatically restarts whenever a change is made to your code
+1. Choose an application (chat, hangman, number-guess)
+2. Invite another scratchnet instance to join you.
+3. When the other instance accepts the invitation a scratch extension file ({service}.s2e) is generated in the current directory.
 
-    nodemon mngr.js 2000
-    nodemon mngr.js 2001
+Start scratch
+
+1. Shift-click on 'File' in the menu bar.
+2. Select 'Open experimental extension'
+3. Open the scratch extension.
+4. Start scratching ;) You'll find the extension under 'Blocks'
+
 
