@@ -7,9 +7,9 @@
 var path = require('path');
 var http = require('http');
 var expr = require('express');
-var dir = require('./lib/dir');
-var comm = require('./lib/comm');
-var conf = require('./lib/conf')();
+var dir = require('../lib/dir');
+var comm = require('../lib/comm');
+var conf = require('../lib/conf')();
 
 //-------------   MAIN LAUNCHER PROCESSING ------------
 
