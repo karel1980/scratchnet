@@ -3,29 +3,44 @@ extend layout
 block content
   .container
     .row
-      h3 Lijst van gevonden scratch-netters
+      .col-md-4
+        h3 Lijst van beschikbare services
 
-      each svc,key in services
+        h4 Sleep van hier...
         ul
-          li #{svc.key} #{svc.params.isMe?"*me*":""} #{svc.params.isMaster?"*master*":""}
-        ul
+          each svc,key in catalog
+            li.linker #{key}
 
-    .row
-      h3 Lijst van beschikbare services
+      .col-md-4
+        h3 Lijst van gevonden scratch-netters
 
-      ul
-        each svc,key in catalog
-          li.linker #{svc} #{key}
+        h4 ... naar hier
+        each svc,key in services
+          ul
+            li.service #{svc.key} #{svc.params.isMe?"*me*":""} #{svc.params.isMaster?"*master*":""}
+          ul
 
       script.
         $(function() {
-          $(".linker").click(function() {
-            showLinkDialog($(this).text())
-          })
+          $(".linker").draggable({revert:true})
+          $(".service")
+            .droppable({
+              accept: ".linker",
+              activeClass: "ui-state-hover",
+              hoverClass: "ui-state-active",
+              drop: function( event, ui ) {
+                var svc = $(this).text()
+                var linker = ui.helper.text()
+                alert(svc)
+                alert(linker)
+                //showLinkDialog(svc, linker)
+              }
+            })
 
           //TODO: enable drag-n-drop between services and scratchnet instances
         })
 
     .row
-      h3 Lijst van actieve links
-        TODO
+      .col-md-12
+        h3 Lijst van actieve links
+          TODO

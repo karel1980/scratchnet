@@ -5,6 +5,13 @@ task to each other.
 
 NOTE: work in progress. The instructions below describe how it's intended to work
 
+## Installation / Dependencies
+
+    #TODO: verify this sequence on a fresh vm
+    npm install -g bower
+    bower init
+    npm install
+
 ## Start scratchnet
 
     node scratchnet.js
