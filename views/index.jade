@@ -1,46 +1,58 @@
 extend layout
 
 block content
-  .container
-    .row
-      .col-md-4
-        h3 Lijst van beschikbare services
+  div(ng-app)
+    .container(data-ng-controller="ScratchnetController as scratchnet")
+      .row
+        .col-md-4
+          p: a(href="#somewhere") go to '#somewhere'
+          p: a(href="#") go to '#'
+          p: a(href="foo") go to 'foo'
 
-        h4 Sleep van hier...
-        ul
-          each svc,key in catalog
-            li.linker #{key}
+      .row
+        .col-md-4(ng-view)
+          p AngularJS testing
 
-      .col-md-4
-        h3 Lijst van gevonden scratch-netters
+      .row
+        .col-md-4
+          h3 Lijst van beschikbare services
 
-        h4 ... naar hier
-        each svc,key in services
+
+          h4 Sleep van hier...
           ul
-            li.service #{svc.key} #{svc.params.isMe?"*me*":""} #{svc.params.isMaster?"*master*":""}
-          ul
+            each svc,key in catalog
+              li.linker #{key}
 
-      script.
-        $(function() {
-          $(".linker").draggable({revert:true})
-          $(".service")
-            .droppable({
-              accept: ".linker",
-              activeClass: "ui-state-hover",
-              hoverClass: "ui-state-active",
-              drop: function( event, ui ) {
-                var svc = $(this).text()
-                var linker = ui.helper.text()
-                alert(svc)
-                alert(linker)
-                //showLinkDialog(svc, linker)
-              }
-            })
+        .col-md-4
+          h3 Lijst van gevonden scratch-netters
 
-          //TODO: enable drag-n-drop between services and scratchnet instances
-        })
+          h4 ... naar hier
+          each svc,key in services
+            ul
+              li.service #{svc.key} #{svc.params.isMe?"*me*":""} #{svc.params.isMaster?"*master*":""}
+            ul
 
-    .row
-      .col-md-12
-        h3 Lijst van actieve links
-          TODO
+        script.
+          $(function() {
+            $(".linker").draggable({revert:true})
+            $(".service")
+              .droppable({
+                accept: ".linker",
+                activeClass: "ui-state-hover",
+                hoverClass: "ui-state-active",
+                drop: function( event, ui ) {
+                  var svc = $(this).text()
+                  var linker = ui.helper.text()
+                  alert(svc)
+                  alert(linker)
+                  //showLinkDialog(svc, linker)
+                }
+              })
+
+            //TODO: enable drag-n-drop between services and scratchnet instances
+          })
+
+      .row
+        .col-md-12
+          h3 Lijst van actieve links
+            TODO
