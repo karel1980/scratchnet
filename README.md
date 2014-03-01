@@ -3,8 +3,6 @@
 This application lets different scratch instances on the local network
 task to each other.
 
-NOTE: work in progress. The instructions below describe how it's intended to work
-
 ## Installation / Dependencies
 
     #TODO: verify this sequence on a fresh vm
@@ -15,6 +13,16 @@ NOTE: work in progress. The instructions below describe how it's intended to wor
 ## Start scratchnet
 
     node scratchnet.js
+
+## Advanced startup
+
+To start on a different port, use
+
+    node scratchnet.js 5000
+
+To start 2 instances and automatically start a service, use
+
+    node scratchnet.js 2000:2001:chat-1.0
 
 ## Using scratchnet
 
