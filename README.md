@@ -7,7 +7,7 @@ task to each other.
 
     #TODO: verify this sequence on a fresh vm
     npm install -g bower
-    bower init
+    bower install
     npm install
 
 ## Start scratchnet
