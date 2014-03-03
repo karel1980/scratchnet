@@ -13,11 +13,11 @@ var ports = {}
 var autos = []
 
 argv._.forEach(function(arg) {
-  var fields = arg.split(":")
+  var fields = String(arg).split(":")
 
   if (fields.length == 1) {
-    var port = Number(fields[0]) = true
-    ports[Number(fields[0])] = true
+    var port = Number(fields[0])
+    ports[port] = true
   } else if (fields.length == 3) {
     var from = Number(fields[0])
     var to = Number(fields[1])
