@@ -8,9 +8,9 @@
             "request":  {                   "name": "Nieuw Galgje"
              },
             "response" : {                  "name": "Nieuw galgje klaar",
-                "args": {
+                "args": [
                     {   "id": "num",        "name": "Aantal Letters"    }
-                }
+                ]
             }
         },
         {
@@ -26,7 +26,7 @@
                     {   "id": "answ",       "name": "Antwoord",
                         "opts": [
                             {   "id": "not", "name": "Niet gevonden."   },
-                            {   "id": "at",  "name": "Gevonden op:"     },
+                            {   "id": "at",  "name": "Gevonden op:"     }
                         ]
                     },
                     {   "id": "posities",     "name": "positie"        }
