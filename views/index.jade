@@ -1,8 +1,8 @@
 extend layout
 
 block content
-  div(ng-app)
-    .container(data-ng-controller="ScratchnetController as scratchnet")
+  div
+    .container(ng-controller="ScratchnetController")
       .row
         .col-md-4
           p: a(href="#somewhere") go to '#somewhere'
@@ -33,24 +33,26 @@ block content
             ul
 
         script.
-          $(function() {
-            $(".linker").draggable({revert:true})
-            $(".service")
-              .droppable({
-                accept: ".linker",
-                activeClass: "ui-state-hover",
-                hoverClass: "ui-state-active",
-                drop: function( event, ui ) {
-                  var svc = $(this).text()
-                  var linker = ui.helper.text()
-                  alert(svc)
-                  alert(linker)
-                  //showLinkDialog(svc, linker)
-                }
-              })
-
-            //TODO: enable drag-n-drop between services and scratchnet instances
-          })
+//-          require(["jquery","jquery-ui"], function() {
+//-            jQuery(function() {
+//-              jQuery(".linker").draggable({revert:true})
+//-              jQuery(".service")
+//-                .droppable({
+//-                  accept: ".linker",
+//-                  activeClass: "ui-state-hover",
+//-                  hoverClass: "ui-state-active",
+//-                  drop: function( event, ui ) {
+//-                    var svc = jQuery(this).text()
+//-                    var linker = ui.helper.text()
+//-                    alert(svc)
+//-                    alert(linker)
+//-                    //showLinkDialog(svc, linker)
+//-                  }
+//-                })
+//-
+//-              //TODO: enable drag-n-drop between services and scratchnet instances
+//-            })
+//-          })
 
       .row
         .col-md-12

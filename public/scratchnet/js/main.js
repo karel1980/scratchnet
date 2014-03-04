@@ -4,23 +4,21 @@ requirejs.config({
 
     paths: {
 
-        //'jquery': 'components/jquery/jquery',
-
+        'jquery': 'public/components/jquery/jquery',
+        'jquery-ui': 'public/components/jquery-ui/ui/jquery-ui',
         'angular': 'public/components/angular/angular',
         'angularRoute': 'public/components/angular-route/angular-route',
-
-        'scratchnetController': 'public/scratchnet/js/controllers/scratchnetController',
+        //TODO 'bootstrap': ''
 
         'app': 'public/scratchnet/js/app',
         'config': 'public/scratchnet/js/config',
-        'routes': 'public/scratchnet/js/routes'
+        'routes': 'public/scratchnet/js/routes',
+
+        'scratchnetController': 'public/scratchnet/js/controllers/scratchnetController',
     },
 
     shim: {
 
-        /*'jquery': {
-            exports: 'jQuery'
-        },*/
         'angular': {
             deps: [ 'jquery' ],
             exports: 'angular'
@@ -31,17 +29,15 @@ requirejs.config({
     }
 });
 
-
-require([
-
+require( [
+    'jquery',
     'angular',
-    'config',
-    'routes'
-
-], function(angular) {
-
-    'use strict';
-
-    angular.bootstrap(document, ['scratchnet']);
-});
-
+    'app',
+    'routes',
+    'scratchnetController'
+    ], function($, angular, app) {
+        console.log("About to bootstrap")
+        angular.bootstrap(document, ['scratchnet']);
+        console.log("done bootstrapping")
+    }
+);
