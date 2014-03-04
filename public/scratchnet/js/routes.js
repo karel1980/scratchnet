@@ -6,7 +6,7 @@ define(['app', 'scratchnetController'], function (app) {
 
         $routeProvider.
             when('/', {
-                templateUrl: './public/scratchnet/templates/scratchnet.html',
+                templateUrl: '/public/scratchnet/templates/scratchnet.html',
                 controller: 'ScratchnetController'
             });
     }]);
