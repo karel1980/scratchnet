@@ -4,12 +4,6 @@ block content
   div
     .container(ng-controller="ScratchnetController")
       .row
-        .col-md-4
-          p: a(href="#somewhere") go to '#somewhere'
-          p: a(href="#") go to '#'
-          p: a(href="foo") go to 'foo'
-
-      .row
         .col-md-4(ng-view)
           p AngularJS testing
 
@@ -31,28 +25,6 @@ block content
             ul
               li.service #{svc.key} #{svc.params.isMe?"*me*":""} #{svc.params.isMaster?"*master*":""}
             ul
-
-        script.
-//-          require(["jquery","jquery-ui"], function() {
-//-            jQuery(function() {
-//-              jQuery(".linker").draggable({revert:true})
-//-              jQuery(".service")
-//-                .droppable({
-//-                  accept: ".linker",
-//-                  activeClass: "ui-state-hover",
-//-                  hoverClass: "ui-state-active",
-//-                  drop: function( event, ui ) {
-//-                    var svc = jQuery(this).text()
-//-                    var linker = ui.helper.text()
-//-                    alert(svc)
-//-                    alert(linker)
-//-                    //showLinkDialog(svc, linker)
-//-                  }
-//-                })
-//-
-//-              //TODO: enable drag-n-drop between services and scratchnet instances
-//-            })
-//-          })
 
       .row
         .col-md-12

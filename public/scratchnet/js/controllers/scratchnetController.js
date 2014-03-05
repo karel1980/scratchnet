@@ -4,7 +4,25 @@ define(['app', 'config'], function (app) {
 
     app.controller('ScratchnetController', ['$scope', 'config', function ($scope, config) {
 
-        console.log("in controller scope thingy")
+        //FIXME: whe if the data changes? Do we need to re-enable the draggables?
+        $(function() {
+
+          console.log("TTT", $(".linker").length)
+          $(".linker").draggable({revert:true})
+          $(".service")
+            .droppable({
+              accept: ".linker",
+              activeClass: "ui-state-hover",
+              hoverClass: "ui-state-active",
+              drop: function( event, ui ) {
+                var svc = jQuery(this).text()
+                var linker = ui.helper.text()
+                //showLinkDialog(svc, linker)
+              }
+            })
+
+          //TODO: enable drag-n-drop between services and scratchnet instances
+        })
 
         $scope.foo = config.foo
         $scope.services = [
