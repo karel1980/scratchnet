@@ -1,3 +1,4 @@
+console.log("configuring requirejs")
 requirejs.config({
 
     baseUrl: '/',
@@ -8,7 +9,8 @@ requirejs.config({
         'jquery-ui': 'public/components/jquery-ui/ui/jquery-ui',
         'angular': 'public/components/angular/angular',
         'angularRoute': 'public/components/angular-route/angular-route',
-        //TODO 'bootstrap': ''
+
+        'bootstrap': 'public/components/sass-bootstrap/dist/js/bootstrap',
 
         'app': 'public/scratchnet/js/app',
         'config': 'public/scratchnet/js/config',
@@ -18,7 +20,6 @@ requirejs.config({
     },
 
     shim: {
-
         'angular': {
             deps: [ 'jquery' ],
             exports: 'angular'
@@ -34,7 +35,9 @@ require( [
     'angular',
     'app',
     'routes',
-    'scratchnetController'
+    'bootstrap',
+    'jquery-ui',
+    'scratchnetController',
     ], function($, angular, app) {
         console.log("About to bootstrap")
         angular.bootstrap(document, ['scratchnet']);
