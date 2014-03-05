@@ -8,27 +8,35 @@ describe('mngr', function(){
   var mngr1 = mngr({ port: 2010 })
   var mngr2 = mngr({ port: 2011 })
   var mngr3;
+  var defaultCatalogSize = 0
 
   it('should have the right master', function(done){
     setTimeout(function() {
       assert(mngr1.isMaster())
       assert(!mngr2.isMaster())
+      defaultCatalogSize = Object.keys(mngr1.catalog).length;
+      
       mngr3 = mngr({ port: 2009, local_catalog: { 'car': 'toyota' }})
       done()
     }, 500);
   })
 
   it('all managers should have a complete catalog', function(done){
+    
     setTimeout(function() {
       assert(!mngr1.isMaster())
       assert(!mngr2.isMaster())
       assert(mngr3.isMaster())
 
-      var keys = [ "chat-1.0", "guess-1.0", "car" ].join()
+      console.log("catalog-keys = %j", Object.keys(mngr1.catalog) );
+      console.log("catalog-size = %d", Object.keys(mngr1.catalog).length );
+      assert.equal(Object.keys(mngr1.catalog).length, defaultCatalogSize + 1);
+      var keys = Object.keys(mngr1.catalog).join();
+      assert.ok(new RegExp("chat-1\.0").test(keys));
 
-      assert.equal(keys, Object.keys(mngr1.catalog).join())
-      assert.equal(keys, Object.keys(mngr2.catalog).join())
-      assert.equal(keys, Object.keys(mngr3.catalog).join())
+      assert.equal(keys, Object.keys(mngr2.catalog).join());
+      assert.equal(keys, Object.keys(mngr3.catalog).join());
+      
       done()
     }, 1000)
   })
