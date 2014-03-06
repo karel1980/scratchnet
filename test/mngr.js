@@ -1,5 +1,5 @@
 
-var assert = require("assert")
+var assert = require('assert')
 var mngr = require('../lib/mngr.js')
 var _ = require('underscore')
 
@@ -28,11 +28,11 @@ describe('mngr', function(){
       assert(!mngr2.isMaster())
       assert(mngr3.isMaster())
 
-      console.log("catalog-keys = %j", Object.keys(mngr1.catalog) );
-      console.log("catalog-size = %d", Object.keys(mngr1.catalog).length );
+      console.log('catalog-keys = %j', Object.keys(mngr1.catalog) );
+      console.log('catalog-size = %d', Object.keys(mngr1.catalog).length );
       assert.equal(Object.keys(mngr1.catalog).length, defaultCatalogSize + 1);
       var keys = Object.keys(mngr1.catalog).join();
-      assert.ok(new RegExp("chat").test(keys));
+      assert.ok(new RegExp('chat').test(keys));
 
       assert.equal(keys, Object.keys(mngr2.catalog).join());
       assert.equal(keys, Object.keys(mngr3.catalog).join());
@@ -44,7 +44,7 @@ describe('mngr', function(){
   it('should handle invitations like a boss', function(done){
     setTimeout(function() {
       assert.equal(0, Object.keys(mngr1.getLinks()).length)
-      mngr1.invite(mngr2.id, "chat", function(invitation) {
+      mngr1.invite(mngr2.id, 'chat', function(invitation) {
         mngr2.accept(invitation.key, function() {
           // the comms should now be started and linked
           assert.equal(1, Object.keys(mngr1.getLinks()).length)

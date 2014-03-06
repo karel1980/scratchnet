@@ -1,4 +1,4 @@
-console.log("configuring requirejs")
+console.log('configuring requirejs')
 requirejs.config({
 
     baseUrl: '/',
@@ -39,8 +39,8 @@ require( [
     'jquery-ui',
     'scratchnetController',
     ], function($, angular, app) {
-        console.log("About to bootstrap")
+        console.log('About to bootstrap')
         angular.bootstrap(document, ['scratchnet']);
-        console.log("done bootstrapping")
+        console.log('done bootstrapping')
     }
 );

@@ -4,14 +4,14 @@ var comm = require('../lib/comm.js')
 var services = {};
 services.chat = require('./resources/config/service/chat-service.json')
 
-var assert = require("assert")
+var assert = require('assert')
 
 function createTestComm(id, service, started) {
   return comm({ id: id, service: service }, started);
 }
 
 function getRequest(port, path, done) {
-    http.request({host: "localhost", port: port, path: path}, function (response){
+    http.request({host: 'localhost', port: port, path: path}, function (response){
         var content = '';
         response.on('data', function (chunk) {
             content += chunk;
@@ -22,10 +22,10 @@ function getRequest(port, path, done) {
             }
         });
         response.on('error', function(err){
-            console.log("  !! there was an error communicating to peer..: %s", err.message);
+            console.log('  !! there was an error communicating to peer..: %s', err.message);
         })
     }).on('error', function(err){
-        console.log("  !! there was an error communicating to peer..: %s", err.message);
+        console.log('  !! there was an error communicating to peer..: %s', err.message);
     }).end();
 }
 
@@ -39,12 +39,12 @@ describe('comm', function(){
             if (count == 2) { // only when both are started.
             
                 // connect them up
-                alice.setConnect("localhost", bob.bind.port, bob.id);
-                bob.setConnect("localhost", alice.bind.port, alice.id);
+                alice.setConnect('localhost', bob.bind.port, bob.id);
+                bob.setConnect('localhost', alice.bind.port, alice.id);
                 
                 function sendHiFrom(comm, i) {
-                    var msg = encodeURI(util.format("hi %s %d", comm.connect.id, i));
-                    getRequest(comm.bind.port, "/send/" + msg);
+                    var msg = encodeURI(util.format('hi %s %d', comm.connect.id, i));
+                    getRequest(comm.bind.port, '/send/' + msg);
                 }
                 
                 // send messages hence and forth           
@@ -54,17 +54,17 @@ describe('comm', function(){
                 }
 
                 function assertHiAt(comm, i) {
-                    var expectMsg = util.format("hi_%s_%d", comm.id, i);
-                    getRequest(comm.bind.port, "/poll", function(resp, data){
-                        var lines = data.split("/n");
+                    var expectMsg = util.format('hi_%s_%d', comm.id, i);
+                    getRequest(comm.bind.port, '/poll', function(resp, data){
+                        var lines = data.split('/n');
                         for (var i=0; i<lines.length; i++) {
-                            var line = lines[i].split(" ");
-                            if (line[0] == "send-msg-crnt") {
+                            var line = lines[i].split(' ');
+                            if (line[0] == 'send-msg-crnt') {
                                 assert.equal(expectMsg, line[1]);
                             }
                         }
                     });
-                    getRequest(comm.bind.port, "/send-ack");
+                    getRequest(comm.bind.port, '/send-ack');
                 }
                 
                 // send/receive is async, so just testing after a timeout
@@ -78,19 +78,19 @@ describe('comm', function(){
             }
         };
         
-        alice = createTestComm("alice", services.chat, started);
-        bob   = createTestComm("bob", services.chat, started);
+        alice = createTestComm('alice', services.chat, started);
+        bob   = createTestComm('bob', services.chat, started);
     });
   
     it('should allow downloading the scratch extension spec', function (done){
-        var me = createTestComm( "me", services.chat, function() {
+        var me = createTestComm( 'me', services.chat, function() {
             var port = me.bind.port;
-            me.setConnect("localhost", port, me.id); // only connected service returns extension
-            getRequest(port, "/extension", function(resp, data) {
-                console.log("data == %s", data);
-                console.log("resp.headers == %j", resp.headers);
+            me.setConnect('localhost', port, me.id); // only connected service returns extension
+            getRequest(port, '/extension', function(resp, data) {
+                console.log('data == %s', data);
+                console.log('resp.headers == %j', resp.headers);
                 
-                assert.equal("application/json", resp.headers['content-type']);
+                assert.equal('application/json', resp.headers['content-type']);
                 var cdh = resp.headers['content-disposition']
                 assert('extension uri uses content-disposition', cdh && cdh.match(/attachment; filename=.*\.s2e/));
                 

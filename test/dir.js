@@ -1,10 +1,10 @@
 
 
 dir = require('../lib/dir.js')
-var assert = require("assert")
+var assert = require('assert')
 
-var dir1 = dir({ includes: ["foo","bar"] })
-var dir2 = dir({ includes: ["foo","bar"] })
+var dir1 = dir({ includes: ['foo','bar'] })
+var dir2 = dir({ includes: ['foo','bar'] })
 
 dir1.register('foo', 'localhost', 9001);
 dir2.register('bar', 'localhost', 9002);

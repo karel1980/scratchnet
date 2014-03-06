@@ -7,13 +7,13 @@ define(['app', 'config'], function (app) {
         //FIXME: whe if the data changes? Do we need to re-enable the draggables?
         $(function() {
 
-          console.log("TTT", $(".linker").length)
-          $(".linker").draggable({revert:true})
-          $(".service")
+          console.log('TTT', $('.linker').length)
+          $('.linker').draggable({revert:true})
+          $('.service')
             .droppable({
-              accept: ".linker",
-              activeClass: "ui-state-hover",
-              hoverClass: "ui-state-active",
+              accept: '.linker',
+              activeClass: 'ui-state-hover',
+              hoverClass: 'ui-state-active',
               drop: function( event, ui ) {
                 var svc = jQuery(this).text()
                 var linker = ui.helper.text()
@@ -26,22 +26,22 @@ define(['app', 'config'], function (app) {
 
         $scope.foo = config.foo
         $scope.services = [
-          { id: "svc1" },
-          { id: "svc2" },
-          { id: "svc3" }
+          { id: 'svc1' },
+          { id: 'svc2' },
+          { id: 'svc3' }
         ]
         $scope.scratchnetInstances = [
-          { id: "alice" },
-          { id: "bob" }
+          { id: 'alice' },
+          { id: 'bob' }
         ]
         $scope.links = [
-          { id: "link1" },
-          { id: "link2" }
+          { id: 'link1' },
+          { id: 'link2' }
         ]
 
         setTimeout(function() {
-          console.log("foo")
-          $scope.services.push({id: "svc4"})
+          console.log('foo')
+          $scope.services.push({id: 'svc4'})
           $scope.$apply()
         }, 2000)
 
