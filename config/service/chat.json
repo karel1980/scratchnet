@@ -1,5 +1,5 @@
 {
-    "id": "chat-1.0",                "name": "Chat 1.0",
+    "name": "Chat",
     "description": "Een protocol om chat-berichten tussen gelijkwaardige spelers te sturen.",
     
     "type": "peer",

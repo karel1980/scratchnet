@@ -5,10 +5,11 @@ var fs = require("fs");
 
 describe('conf', function(){
     it('should load single config files', function(done){
-        var serv = conf.get("service", "chat-service");
+        var id = "chat";
+        var serv = conf.get("service", id);
         console.log("loaded %j", serv);
         assert.ok(serv != null, "service not loaded/returned");
-        assert.equal(serv.id, "chat-1.0", "expected different id" );
+        assert.equal(serv.id, id, "expected different id" );
         done();
     });
   

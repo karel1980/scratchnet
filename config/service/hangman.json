@@ -1,5 +1,5 @@
 {
-    "id": "hangman-1.0",                   "name": "Galgje",
+    "name": "Galgje",
     "description": "Protocol voor vraag-en-antwoord galgje.",
     "type": "request-response",
     "messages" :[

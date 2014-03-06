@@ -1,5 +1,5 @@
 {
-    "id": "guess-1.0",                     "name": "Nummer Raden",
+    "name": "Nummer Raden",
     "description": "Protocol voor vraag-en-antwoord gokken naar getal.",
     "type": "request-response",
     "messages" :[
