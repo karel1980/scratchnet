@@ -10,7 +10,7 @@
     "jade": "*",
     "underscore": "*",
     "request": "*",
-    "optimist": "*"
+    "minimist": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

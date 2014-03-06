@@ -14,15 +14,16 @@ task to each other.
 
     node scratchnet.js
 
-## Advanced startup
+## Startup options:
 
-To start on a different port, use
+    -c config (use an alternate configuration, defaults to 'me')
+    -n name (override the name from the launcher config)
+    -p port (override the port from the launcher config)
 
-    node scratchnet.js 5000
+## Auto-connect example:
 
-To start 2 instances and automatically start a service, use
-
-    node scratchnet.js 2000:2001:chat-1.0
+    node scratchnet.js -c bob
+    node scratchnet.js -c alice
 
 ## Using scratchnet
 

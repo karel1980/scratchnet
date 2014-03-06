@@ -1,0 +1,10 @@
+{ 
+    "name": "alice",
+    "port": 2000,
+    "links": [
+        {
+          "to": "bob",
+          "service": "chat"
+        }
+    ]
+}

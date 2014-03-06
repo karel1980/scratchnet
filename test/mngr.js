@@ -4,9 +4,10 @@ var mngr = require('../lib/mngr.js')
 var _ = require('underscore')
 
 describe('mngr', function(){
+  this.timeout(5000);
 
-  var mngr1 = mngr({ port: 2010 })
-  var mngr2 = mngr({ port: 2011 })
+  var mngr1 = mngr({ name: "fred", port: 2010 })
+  var mngr2 = mngr({ name: "barney", port: 2011 })
   var mngr3;
   var defaultCatalogSize = 0
 
@@ -16,7 +17,7 @@ describe('mngr', function(){
       assert(!mngr2.isMaster())
       defaultCatalogSize = Object.keys(mngr1.catalog).length;
       
-      mngr3 = mngr({ port: 2009, local_catalog: { 'car': 'toyota' }})
+      mngr3 = mngr({ name: "wilma", port: 2009, local_catalog: { 'car': 'toyota' }})
       done()
     }, 500);
   })
