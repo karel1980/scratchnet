@@ -6,9 +6,9 @@ define(['app', 'config'], function (app) {
 
         $scope.foo = config.foo
         $scope.services = [
-          { id: 'svc1' },
-          { id: 'svc2' },
-          { id: 'svc3' }
+          { value: { name: 'svc1' }},
+          { value: { name: 'svc2' }},
+          { value: { name: 'svc3' }}
         ]
         $scope.scratchnetInstances = [
           { id: 'alice' },
@@ -19,11 +19,10 @@ define(['app', 'config'], function (app) {
           { id: 'link2' }
         ]
 
-        setTimeout(function() {
-          console.log('foo')
-          $scope.services.push({id: 'svc4'})
+        $.getJSON('/data/services', function(data) {
+          $scope.services = data
           $scope.$apply()
-        }, 2000)
+        })
 
     }]);
 

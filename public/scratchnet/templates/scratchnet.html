@@ -3,7 +3,7 @@
   <div class="col-md-4">
     <h4>Services</h4>
     <ul>
-      <li sn-service ng-repeat="service in services">{{service.id}}</li>
+      <li sn-service ng-repeat="(id,svc) in services">{{id}}</li>
     </ul>
   </div>
 
