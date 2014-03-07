@@ -39,8 +39,6 @@ require( [
     'jquery-ui',
     'scratchnetController',
     ], function($, angular, app) {
-        console.log('About to bootstrap')
         angular.bootstrap(document, ['scratchnet']);
-        console.log('done bootstrapping')
     }
 );

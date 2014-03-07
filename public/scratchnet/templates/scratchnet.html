@@ -1,18 +1,40 @@
-<p>Hello {{foo}}</p>
-<p>Hier moet op termijn hetzelfde komen als hieronder</p>
 
-<h4>Services</h4>
-<ul>
-  <li class="service" ng-repeat="service in services">{{service.id}}</li>
-</ul>
+<div class="row">
+  <div class="col-md-4">
+    <h4>Services</h4>
+    <ul>
+      <li sn-service ng-repeat="service in services">{{service.id}}</li>
+    </ul>
+  </div>
 
-<h4>Scratchnetters</h4>
-<ul>
-  <li ng-repeat="inst in scratchnetInstances">{{inst.id}}</li>
-  <li class="linker">foo</li>
-</ul>
+  <div class="col-md-4">
+    <h4>Scratchnetters</h4>
+    <ul>
+      <li sn-instance ng-repeat="inst in scratchnetInstances">{{inst.id}}</li>
+    </ul>
+  </div>
+</div>
 
-<h4>Links</h4>
-<ul>
-  <li ng-repeat="link in links">{{link.id}}</li>
-</ul>
+<div class="row">
+  <div class="col-md-4">
+    <h4>Verstuurde uitnodigingen</h4>
+    <ul>
+      <li sn-inv-out ng-repeat="inv in invitationsOut">{{inv.id}}</li>
+    </ul>
+  </div>
+  <div class="col-md-4">
+    <h4>Ontvangen uitnodigingen</h4>
+    <ul>
+      <li sn-inv-in ng-repeat="inv in invitationsIn">{{inv.id}}</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <h4>Links</h4>
+    <ul>
+      <li sn-inv-out ng-repeat="link in links">{{link.id}}</li>
+    </ul>
+  </div>
+</div>
