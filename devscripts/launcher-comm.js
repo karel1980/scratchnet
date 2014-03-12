@@ -35,20 +35,14 @@ app.get("/_id", function(req, res ) {
 });
 
 // Read local services from conf
-var services = {};
-launch_conf.services.forEach(function(name) {
-  svc = conf.get("service", name)
-  services[svc.id] = svc
-})
-// replace
-launch_conf.services = services;
+var services = launch_conf.services = conf.getType('service');
 
 // Instantiate persisted - hardwired communication-links
-console.log(JSON.stringify(launch_conf))
 for (commId in launch_conf.comms) {
     var commConf = launch_conf.comms[commId];
     commConf.id = commConf.id || commId;
     commConf.service = services[commConf.service];
+    console.log("launching communication %j", commConf);
     comm(commConf); // create and activate communciation-connections
 }
 
