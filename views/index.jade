@@ -4,29 +4,10 @@ block content
   div
     .container(ng-controller="ScratchnetController")
       .row
+        .col-md-4
+          h1 Scratchnet
+
+      .row
         .col-md-4(ng-view)
-          p AngularJS testing
+          p (loading...)
 
-      .row
-        .col-md-4
-          h3 Lijst van beschikbare services
-
-
-          h4 Sleep van hier...
-          ul
-            each svc,key in catalog
-              li.linker #{key}
-
-        .col-md-4
-          h3 Lijst van gevonden scratch-netters
-
-          h4 ... naar hier
-          each svc,key in services
-            ul
-              li.service #{svc.key} #{svc.params.isMe?"*me*":""} #{svc.params.isMaster?"*master*":""}
-            ul
-
-      .row
-        .col-md-12
-          h3 Lijst van actieve links
-            TODO

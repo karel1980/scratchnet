@@ -45,8 +45,8 @@ describe('mngr', function(){
   it('should handle invitations like a boss', function(done){
     setTimeout(function() {
       assert.equal(0, Object.keys(mngr1.getLinks()).length)
-      mngr1.invite(mngr2.id, 'chat', function(invitation) {
-        mngr2.accept(invitation.key, function() {
+      mngr1.sendInvitation(mngr2.id, 'chat', function(invitation) {
+        mngr2.sendAcceptance(invitation.key, function() {
           // the comms should now be started and linked
           assert.equal(1, Object.keys(mngr1.getLinks()).length)
           assert.equal(1, Object.keys(mngr2.getLinks()).length)
