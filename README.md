@@ -42,4 +42,12 @@ Start scratch
 3. Open the scratch extension.
 4. Start scratching ;) You'll find the extension under 'Blocks'
 
+## Quick Demo
+
+While still in development we provided this fast test env to check how things work out in scratch:
+
+1. launch:  
+    node devscripts/launcher-comm.js EchoChat
+2. startup the scratch project found at
+    ./scratch-sample/echo.sb2
 
